@@ -26,6 +26,7 @@ const ProductQuantitySelector: React.FC<ProductQuantitySelectorProps> = ({
         className="rounded border p-1 hover:bg-gray-100 focus:outline-none active:bg-gray-300"
         onClick={decrementQuantity}
         disabled={product.stock === 0}
+        aria-label="Decrement"
       >
         <MinusIcon />
       </button>
@@ -40,6 +41,7 @@ const ProductQuantitySelector: React.FC<ProductQuantitySelectorProps> = ({
         className="rounded border p-1 hover:bg-gray-100 focus:outline-none active:bg-gray-300"
         onClick={incrementQuantity}
         disabled={product.stock === 0}
+        aria-label="Increment"
       >
         <PlusIcon />
       </button>
