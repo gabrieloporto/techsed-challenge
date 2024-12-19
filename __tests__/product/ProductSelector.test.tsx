@@ -11,7 +11,7 @@ describe("ProductSelector Component", () => {
     description: "Ladrillo hueco - Pallet",
     price: 60000,
     stock: 5,
-    salesUnit: "group", // Literal compatible
+    salesUnit: "group",
     measurementUnit: "pallet",
     unitValue: 198,
     imageUrl: "https://example.com/group.jpg",
@@ -51,7 +51,7 @@ describe("ProductSelector Component", () => {
 
     expect(screen.getByText("Superficie")).toBeInTheDocument();
 
-    // Solución: Comparación aproximada
+    // Comparación aproximada para evitar errores de redondeo
     const input = screen.getByDisplayValue(
       (value) => Math.abs(parseFloat(value) - 8.04) < 0.01
     );
@@ -63,7 +63,7 @@ describe("ProductSelector Component", () => {
   it("renders correctly for 'unit' products", () => {
     const mockUnitProduct: Product = {
       ...mockGroupProduct,
-      salesUnit: "unit", // Literal compatible
+      salesUnit: "unit",
       unitValue: undefined,
     };
 

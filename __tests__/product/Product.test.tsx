@@ -37,6 +37,7 @@ describe("Product Component", () => {
     expect(screen.getByText(mockProduct.title)).toBeInTheDocument();
     expect(screen.getByText(mockProduct.description)).toBeInTheDocument();
 
+    // Aqui tenia un problema al verificar la imagen y era que next.js altera las URL de las imagenes
     // Solución: Verificar que `src` contenga la URL codificada
     const image = screen.getByAltText(mockProduct.title);
     expect(image).toHaveAttribute(

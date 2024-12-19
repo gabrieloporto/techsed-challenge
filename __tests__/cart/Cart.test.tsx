@@ -50,7 +50,7 @@ describe("Cart Component", () => {
         screen.getByText(`Cantidad: ${item.quantity}`)
       ).toBeInTheDocument();
 
-      // Solución: Comparar precios con un matcher más flexible
+      // Comparar precios con un matcher más flexible
       expect(
         screen.getByText((content) =>
           content.includes(item.product.price.toLocaleString())
@@ -68,7 +68,7 @@ describe("Cart Component", () => {
       0
     );
 
-    // Solución: Comparar total con un matcher más flexible
+    // Aquí se espera que el total se muestre correctamente
     expect(
       screen.getByText((content) =>
         content.includes(expectedTotal.toLocaleString())
