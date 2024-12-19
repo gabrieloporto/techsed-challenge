@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { Product } from "../types";
+import { useEffect, useState } from "react";
 import { calculateQuantity, isValidQuantity } from "../utils/productUtils";
-import { MinusIcon, PlusIcon } from "./UI/Icons";
+import { Product } from "../types";
 
 interface QuantitySelectorProps {
   product: Product;
@@ -9,17 +8,17 @@ interface QuantitySelectorProps {
   initialQuantity?: number;
 }
 
-const QuantitySelector: React.FC<QuantitySelectorProps> = ({
+export default function useProductQuantity({
   product,
   onQuantityChange,
-  initialQuantity = 0,
-}) => {
+  initialQuantity,
+}: QuantitySelectorProps) {
   const [quantity, setQuantity] = useState(initialQuantity);
-  const [inputValue, setInputValue] = useState(initialQuantity.toString());
+  const [inputValue, setInputValue] = useState(initialQuantity!.toString());
 
   useEffect(() => {
     setQuantity(initialQuantity);
-    setInputValue(initialQuantity.toString());
+    setInputValue(initialQuantity!.toString());
   }, [initialQuantity]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,7 +33,7 @@ const QuantitySelector: React.FC<QuantitySelectorProps> = ({
   };
 
   const incrementQuantity = () => {
-    const newQuantity = quantity + 1;
+    const newQuantity = quantity! + 1;
     if (isValidQuantity(product, newQuantity)) {
       setQuantity(newQuantity);
       setInputValue(newQuantity.toString());
@@ -43,7 +42,7 @@ const QuantitySelector: React.FC<QuantitySelectorProps> = ({
   };
 
   const decrementQuantity = () => {
-    const newQuantity = quantity - 1;
+    const newQuantity = quantity! - 1;
     if (newQuantity >= 0) {
       setQuantity(newQuantity);
       setInputValue(newQuantity.toString());
@@ -51,29 +50,10 @@ const QuantitySelector: React.FC<QuantitySelectorProps> = ({
     }
   };
 
-  return (
-    <div className="mt-1 flex items-center space-x-2">
-      <button
-        className="rounded border p-1 hover:bg-gray-100 focus:outline-none active:bg-gray-300"
-        onClick={decrementQuantity}
-      >
-        <MinusIcon />
-      </button>
-      <input
-        className="w-16 rounded border p-1 text-center border-gray-100"
-        type="text"
-        value={inputValue}
-        onChange={handleInputChange}
-        disabled
-      />
-      <button
-        className="rounded border p-1 hover:bg-gray-100 focus:outline-none active:bg-gray-300"
-        onClick={incrementQuantity}
-      >
-        <PlusIcon />
-      </button>
-    </div>
-  );
-};
-
-export default QuantitySelector;
+  return {
+    inputValue,
+    handleInputChange,
+    incrementQuantity,
+    decrementQuantity,
+  };
+}

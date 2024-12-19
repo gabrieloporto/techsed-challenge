@@ -1,15 +1,11 @@
 import { Product, CartItem } from "../types";
 
 export const calculateQuantity = (product: Product, value: number): number => {
-  switch (product.salesUnit) {
-    case "group":
-      return Math.floor(value / product.unitValue!) * product.unitValue!;
-    case "area":
-      return Math.ceil(value / product.unitValue!);
-    case "unit":
-    default:
-      return Math.floor(value);
-  }
+  if (product.salesUnit === "group")
+    return Math.floor(value / product.unitValue!) * product.unitValue!;
+  if (product.salesUnit === "area")
+    return Math.ceil(value / product.unitValue!);
+  return Math.floor(value);
 };
 
 export const calculateSavingsPercentage = (product: Product) => {
