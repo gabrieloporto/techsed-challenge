@@ -78,7 +78,7 @@ npm run test:watch
 
 La aplicacion fue desplegada en Vercel:
 
-[Live Demo]()
+[Live Demo](https://techsed-challenge.vercel.app/)
 
 ## 📚 Recursos
 
