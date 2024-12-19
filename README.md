@@ -1,36 +1,92 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Techsed Challenge
 
-## Getting Started
+Este es un proyecto desarrollado como parte del desafío técnico **Techsed Challenge**, una aplicación de carrito de compras implementada con **Next.js**, **React**, y **TypeScript**, utilizando **TailwindCSS** para el diseño y **Jest** con **React Testing Library** para pruebas unitarias.
 
-First, run the development server:
+## 🚀 Tecnologías Utilizadas
+
+- **Next.js** 15.1.0: Framework de React para aplicaciones web.
+- **React** 19.0.0 y **React DOM** 19.0.0: Librería para interfaces de usuario.
+- **TypeScript** 5.0: Superconjunto tipado de JavaScript.
+- **TailwindCSS** 3.4.1: Framework de utilidades para el diseño.
+- **Jest** y **React Testing Library**: Herramientas para pruebas unitarias y de integración.
+- **Vercel**: Para desplegar la aplicacion.
+- **ESLint**: Linter para mantener código limpio y consistente.
+
+---
+
+## ⚙️ Requisitos Previos
+
+Antes de comenzar, asegúrate de tener instalado en tu máquina:
+
+- **Node.js** (versión 16 o superior).
+- **npm** (administrador de paquetes de Node.js).
+
+---
+
+## 📦 Instalación
+
+Sigue estos pasos para clonar y configurar el proyecto:
+
+1. Clona este repositorio:
+
+```bash
+ git clone https://github.com/gabrieloporto/techsed-challenge
+```
+
+```bash
+ cd techsed-challenge
+```
+
+2. Instala las dependencias:
+
+```bash
+npm install
+```
+
+3. Iniciar el Servidor de Desarrollo:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+La aplicación estará disponible en http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🧪 Pruebas
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Este proyecto utiliza Jest y React Testing Library para garantizar la calidad del código. Las pruebas se encuentran organizadas en la carpeta **tests**.
 
-## Learn More
+- Componentes probados:
+  - Product
+  - ProductSelector
+  - Cart
 
-To learn more about Next.js, take a look at the following resources:
+### Ejecutar Pruebas
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Para ejecutar todos los tests:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npm test
+```
 
-## Deploy on Vercel
+Para ejecutar los tests en modo interactivo (watch):
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+npm run test:watch
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🌐 Live Demo
+
+La aplicacion fue desplegada en Vercel:
+
+[Live Demo]()
+
+## 📚 Recursos
+
+- [Testing: Jest | Next.js](https://nextjs.org/docs/app/building-your-application/testing/jest).
+
+## 👨‍💻 Autor
+
+Gabriel Oporto
+
+- [Linkedin](https://www.linkedin.com/in/gabrieloporto/)
+- [Portfolio web](https://gabrieloporto.vercel.app/)
