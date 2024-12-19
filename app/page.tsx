@@ -1,9 +1,8 @@
 "use client";
 
-import React from "react";
 import Cart from "./components/Cart/Cart";
 import useCart from "./hooks/useCart";
-import products from "./mocks/productData";
+import products from "./data/productData";
 import Product from "./components/Product/Product";
 
 export default function App() {
