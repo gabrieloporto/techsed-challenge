@@ -12,7 +12,7 @@ const Cart: React.FC<CartProps> = ({ items }) => {
   const total = totalSum(items);
 
   return (
-    <section className="border lg:ml-[10%] lg:mr-[23%] border-gray-300 p-4 rounded-lg shadow-md">
+    <section className="border border-gray-300 p-4 rounded-lg shadow-md">
       <h2 className="text-xl font-bold mb-4">Carrito de compras</h2>
       {items.length === 0 ? (
         <p>El carrito está vacío</p>

@@ -9,12 +9,9 @@ export default function App() {
   const { cart, handleAddToCart, handleRemoveFromCart } = useCart();
 
   return (
-    <main className="container mx-auto lg:ml-[10%] lg:mr-[23%] px-4 py-8">
-      <h1 className="text-3xl lg:ml-[10%] lg:mr-[23%] font-bold mb-8">
-        Catálogo de Productos
-      </h1>
-
-      <article className="flex flex-col lg:ml-[10%] lg:mr-[23%] justify-center items-center">
+    <main className="mx-auto lg:mx-32 xl:mx-60 px-4 py-8">
+      <h1 className="text-3xl font-bold mb-8">Catálogo de Productos</h1>
+      <article className="flex flex-col justify-center items-center">
         {products.map((product) => (
           <Product
             key={product.id}

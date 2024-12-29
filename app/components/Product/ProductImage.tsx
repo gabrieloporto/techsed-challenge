@@ -15,7 +15,7 @@ export default function ProductImage({ product }: ProductImageProps) {
           width="400"
           height="400"
           decoding="async"
-          className="max-w-[300px] h-80 cursor-pointer"
+          className="max-w-80 cursor-pointer"
           src={product.imageUrl}
           style={{ color: "transparent" }}
         />
