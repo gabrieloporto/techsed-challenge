@@ -20,7 +20,7 @@ export default function ProductCheckoutButton({
     <div className="w-full p-3">
       <div className="w-full">
         <button
-          className="flex w-full items-center justify-center rounded-full border-2 border-[#264b97] bg-[#254A96] px-4 py-3 font-medium text-white transition hover:border-black hover:bg-black"
+          className="flex w-full items-center justify-center rounded-full bg-primary px-4 py-3 font-medium text-white transition hover:bg-black"
           style={
             cartItemQuantity <= 0
               ? { marginBottom: "67px" }
@@ -44,7 +44,7 @@ export default function ProductCheckoutButton({
         <div className="mt-4 w-full">
           <button
             type="button"
-            className="w-full rounded-full border-2 border-[#264b97]  bg-white px-8 py-3 font-medium text-[#254A96] transition hover:border-black hover:bg-black hover:text-white"
+            className="w-full rounded-full border-2 border-primary  bg-white px-8 py-3 font-medium text-primary transition hover:border-black hover:bg-black hover:text-white"
             onClick={handleRemoveFromCart}
           >
             <div className="flex items-center justify-center">

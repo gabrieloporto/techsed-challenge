@@ -9,7 +9,7 @@ export default function CartCheckout({ total }: { total: number }) {
           <p className="text-xl font-bold text-black">{formatPrice(total)}</p>
         </div>
       </div>
-      <button className="border-[#264b97] bg-[#254A96] hover:bg-black mb-2 h-12 w-full rounded-full px-4 py-2 text-white shadow-md focus:outline-none hover:border-black">
+      <button className="bg-primary hover:bg-black mb-2 h-12 w-full rounded-full px-4 py-2 text-white shadow-md focus:outline-none ">
         Finalizar compra
       </button>
     </div>

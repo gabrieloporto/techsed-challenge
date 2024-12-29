@@ -17,7 +17,7 @@ export default function ProductPrice({ product }: ProductPriceProps) {
             <div className="flex items-center justify-center gap-2">
               <p className="text-xl font-bold">{formatPrice(product.price)}</p>
               {product.listingPrice && (
-                <span className="text-xs text-white bg-[#3C83F7] rounded-lg py-[2px] px-3">
+                <span className="text-xs text-white bg-secondary rounded-lg py-1 px-3">
                   {calculateSavingsPercentage(product)}
                 </span>
               )}
