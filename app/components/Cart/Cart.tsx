@@ -1,6 +1,5 @@
-import React from "react";
+import { useMemo } from "react";
 import { CartItem } from "../../types";
-import { totalSum } from "../../utils/cartUtils";
 import CartList from "./CartList";
 import CartCheckout from "./CartCheckout";
 
@@ -9,7 +8,9 @@ interface CartProps {
 }
 
 const Cart: React.FC<CartProps> = ({ items }) => {
-  const total = totalSum(items);
+  const totalSum = (items: CartItem[]) =>
+    items.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
+  const total = useMemo(() => totalSum(items), [items]);
 
   return (
     <section className="border border-gray-300 p-4 rounded-lg shadow-md">

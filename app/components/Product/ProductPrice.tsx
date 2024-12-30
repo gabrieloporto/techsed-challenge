@@ -15,12 +15,17 @@ export default function ProductPrice({ product }: ProductPriceProps) {
     [product]
   );
 
-  const price = useMemo(() => formatPrice(product.listingPrice!), [product]);
-
   const unitPrice = useMemo(
     () => product.price / product.unitValue!,
     [product]
   );
+
+  const listingPrice = useMemo(
+    () => formatPrice(product.listingPrice!),
+    [product]
+  );
+
+  const price = useMemo(() => formatPrice(product.price!), [product]);
 
   return (
     <div className="mb-2">
@@ -28,7 +33,7 @@ export default function ProductPrice({ product }: ProductPriceProps) {
         <div className="flex items-center justify-between font-semibold text-gray-900">
           <div>
             <div className="flex items-center justify-center gap-2">
-              <p className="text-xl font-bold">{formatPrice(product.price)}</p>
+              <p className="text-xl font-bold">{price}</p>
               {product.listingPrice && (
                 <span className="text-xs text-white bg-secondary rounded-lg py-1 px-3">
                   {savingsPercentage}
@@ -40,7 +45,7 @@ export default function ProductPrice({ product }: ProductPriceProps) {
             )}
             {product.listingPrice && (
               <p className="text-sm text-gray-400 line-through mb-2 font-normal">
-                {price}
+                {listingPrice}
               </p>
             )}
           </div>

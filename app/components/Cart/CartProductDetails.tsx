@@ -1,7 +1,10 @@
 import { CartItem } from "@/app/types";
 import { formatPrice } from "@/app/utils/productUtils";
+import { useMemo } from "react";
 
 export default function CartProductDetails({ item }: { item: CartItem }) {
+  const price = useMemo(() => formatPrice(item.product.price), [item]);
+
   return (
     <div className="w-full h-full flex justify-between p-2 ml-4">
       <div>
@@ -13,9 +16,7 @@ export default function CartProductDetails({ item }: { item: CartItem }) {
         </div>
       </div>
 
-      <p className="text-right text-sm font-medium text-gray-900">
-        {formatPrice(item.product.price)}
-      </p>
+      <p className="text-right text-sm font-medium text-gray-900">{price}</p>
     </div>
   );
 }
