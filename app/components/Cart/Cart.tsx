@@ -8,6 +8,7 @@ interface CartProps {
 }
 
 const Cart: React.FC<CartProps> = ({ items }) => {
+  // Calcula el total de la compra
   const totalSum = (items: CartItem[]) =>
     items.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
   const total = useMemo(() => totalSum(items), [items]);
