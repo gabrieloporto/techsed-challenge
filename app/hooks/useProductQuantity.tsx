@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { calculateQuantity, isValidQuantity } from "../utils/productUtils";
 import { Product } from "../types";
 
 interface QuantitySelectorProps {
@@ -16,6 +15,21 @@ export default function useProductQuantity({
   // Inicializamos los estados con la cantidad inicial
   const [quantity, setQuantity] = useState(initialQuantity);
   const [inputValue, setInputValue] = useState(initialQuantity!.toString());
+
+  // Calcula la cantidad de productos a comprar
+  const calculateQuantity = (product: Product, value: number): number => {
+    if (product.salesUnit === "group")
+      return Math.floor(value / product.unitValue!) * product.unitValue!;
+    if (product.salesUnit === "area")
+      return Math.ceil(value / product.unitValue!);
+    return Math.floor(value);
+  };
+
+  // Verifica si la cantidad de productos a comprar es válida
+  const isValidQuantity = (product: Product, quantity: number): boolean => {
+    if (quantity > product.stock) return false;
+    return true;
+  };
 
   // Actualizamos los estados si la cantidad inicial cambia
   useEffect(() => {
