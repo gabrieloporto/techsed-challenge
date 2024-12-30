@@ -1,4 +1,4 @@
-import { Product, CartItem } from "../types";
+import { Product } from "../types";
 
 // Calcula la cantidad de productos a comprar
 export const calculateQuantity = (product: Product, value: number): number => {
@@ -34,13 +34,4 @@ export const formatPrice = (price: number): string => {
   })
     .format(price)
     .replace(",00", ""); // Elimina los decimales si son 00
-};
-
-// Obtiene la cantidad de un producto en el carrito
-export const getCartItemQuantity = (
-  cart: CartItem[],
-  productId: number
-): number => {
-  const item = cart.find((item) => item.product.id === productId);
-  return item ? item.quantity : 0;
 };

@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { getCartItemQuantity } from "../utils/productUtils";
 import { ProductProps } from "../components/Product/Product";
+import { CartItem } from "../types";
 
 export default function useQuantity({
   product,
@@ -10,7 +10,12 @@ export default function useQuantity({
 }: ProductProps) {
   // Incializa el estado de la cantidad del producto en 0
   const [quantity, setQuantity] = useState(0);
+
   // Obtiene la cantidad de un producto en el carrito
+  const getCartItemQuantity = (cart: CartItem[], productId: number): number => {
+    const item = cart.find((item) => item.product.id === productId);
+    return item ? item.quantity : 0;
+  };
   const cartItemQuantity = getCartItemQuantity(cartItems, product.id);
 
   // Maneja el cambio de la cantidad del producto
