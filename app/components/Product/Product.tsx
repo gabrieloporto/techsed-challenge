@@ -6,7 +6,7 @@ import ProductPrice from "./ProductPrice";
 import ProductSelector from "./ProductSelector";
 import ProductCheckoutButton from "./ProductCheckoutButton";
 
-export interface ProductProps {
+interface ProductProps {
   product: ProductType;
   cartItems: CartItem[];
   onAddToCart: (product: ProductType, quantity: number) => void;
