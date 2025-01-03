@@ -1,13 +1,19 @@
 import { useState } from "react";
-import { ProductProps } from "../components/Product/Product";
-import { CartItem } from "../types";
+import { CartItem, Product } from "../types";
+
+interface UseQuantityProps {
+  product: Product;
+  cartItems: CartItem[];
+  onAddToCart: (product: Product, quantity: number) => void;
+  onRemoveFromCart: (productId: number) => void;
+}
 
 export default function useQuantity({
   product,
   cartItems,
   onAddToCart,
   onRemoveFromCart,
-}: ProductProps) {
+}: UseQuantityProps) {
   // Incializa el estado de la cantidad del producto en 0
   const [quantity, setQuantity] = useState(0);
 
