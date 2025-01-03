@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
 import { Product } from "../types";
 
-interface QuantitySelectorProps {
+interface UseUnitSelectorProps {
   product: Product;
   onQuantityChange: (quantity: number) => void;
   initialQuantity?: number;
 }
 
-export default function useProductQuantity({
+export default function useUnitSelector({
   product,
   onQuantityChange,
   initialQuantity,
-}: QuantitySelectorProps) {
+}: UseUnitSelectorProps) {
   // Inicializamos los estados con la cantidad inicial
   const [quantity, setQuantity] = useState(initialQuantity);
   const [inputValue, setInputValue] = useState(initialQuantity!.toString());
