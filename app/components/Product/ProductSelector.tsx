@@ -6,7 +6,6 @@ import AreaSelector from "./Selector/AreaSelector";
 
 interface ProductSelectorProps {
   product: Product;
-  quantity: number;
   cartItemQuantity: number;
   handleQuantityChange: (quantity: number) => void;
 }

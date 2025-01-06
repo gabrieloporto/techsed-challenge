@@ -36,7 +36,6 @@ const Product: React.FC<ProductProps> = ({ product }) => {
             cartItemQuantity={cartItemQuantity}
             handleQuantityChange={handleQuantityChange}
             product={product}
-            quantity={quantity}
           />
         </div>
 
