@@ -15,9 +15,11 @@ const UnitSelector: React.FC<UnitSelectorProps> = ({
 }) => {
   const {
     inputValue,
+    setInputValue,
     decrementQuantity,
     handleInputChange,
     incrementQuantity,
+    handleInputBlur,
   } = useUnitSelector({ product, onQuantityChange, initialQuantity });
 
   return (
@@ -28,7 +30,7 @@ const UnitSelector: React.FC<UnitSelectorProps> = ({
         <button
           className="rounded border p-1 hover:bg-gray-100 focus:outline-none active:bg-gray-300"
           onClick={decrementQuantity}
-          disabled={product.stock === 0}
+          disabled={product.stock === 0 || parseInt(inputValue) <= 0}
           aria-label="Decrement"
         >
           <MinusIcon />
@@ -38,17 +40,19 @@ const UnitSelector: React.FC<UnitSelectorProps> = ({
           type="text"
           value={inputValue}
           onChange={handleInputChange}
-          disabled
+          onFocus={() => inputValue === "0" && setInputValue("")}
+          onBlur={handleInputBlur}
         />
         <button
           className="rounded border p-1 hover:bg-gray-100 focus:outline-none active:bg-gray-300"
           onClick={incrementQuantity}
-          disabled={product.stock === 0}
+          disabled={
+            product.stock === 0 || parseInt(inputValue) >= product.stock
+          }
           aria-label="Increment"
         >
           <PlusIcon />
         </button>
-
         <span>unidades</span>
       </div>
     </div>

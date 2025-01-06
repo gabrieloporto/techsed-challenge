@@ -13,67 +13,63 @@ export default function useUnitSelector({
   initialQuantity,
 }: UseUnitSelectorProps) {
   // Inicializamos los estados con la cantidad inicial
-  const [quantity, setQuantity] = useState(initialQuantity);
-  const [inputValue, setInputValue] = useState(initialQuantity!.toString());
+  const [quantity, setQuantity] = useState(initialQuantity || 0);
+  const [inputValue, setInputValue] = useState(
+    initialQuantity?.toString() || "0"
+  );
 
-  // Calcula la cantidad de productos a comprar
-  const calculateQuantity = (product: Product, value: number): number => {
-    if (product.salesUnit === "group")
-      return Math.floor(value / product.unitValue!) * product.unitValue!;
-    if (product.salesUnit === "area")
-      return Math.ceil(value / product.unitValue!);
-    return Math.floor(value);
+  // Calcula la cantidad válida de productos
+  const calculateQuantity = (value: number): number => {
+    if (value > product.stock) return product.stock; // No exceder el stock
+    if (value < 0) return 0; // No permitir valores negativos
+    return Math.floor(value); // Redondear a números enteros
   };
 
-  // Verifica si la cantidad de productos a comprar es válida
-  const isValidQuantity = (product: Product, quantity: number): boolean => {
-    if (quantity > product.stock) return false;
-    return true;
-  };
-
-  // Actualizamos los estados si la cantidad inicial cambia
-  useEffect(() => {
-    setQuantity(initialQuantity);
-    setInputValue(initialQuantity!.toString());
-  }, [initialQuantity]);
-
-  // Manejamos el cambio de la cantidad
+  // Manejar cambios manuales en el input
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    setInputValue(value);
-    const numericValue = parseFloat(value);
-    // Calculamos la cantidad y la validamos
-    const calculatedQuantity = calculateQuantity(product, numericValue);
-    if (isValidQuantity(product, calculatedQuantity)) {
-      // Actualizamos la cantidad y llamamos a la función de cambio
-      setQuantity(calculatedQuantity);
-      onQuantityChange(calculatedQuantity);
+    if (/^\d*$/.test(value)) {
+      // Solo permitir números
+      setInputValue(value);
     }
   };
 
-  // Incrementamos la cantidad
+  // Validar y actualizar la cantidad al salir del input
+  const handleInputBlur = () => {
+    const numericValue = parseInt(inputValue, 10) || 0;
+    const validQuantity = calculateQuantity(numericValue);
+    setQuantity(validQuantity);
+    setInputValue(validQuantity.toString());
+    onQuantityChange(validQuantity); // Actualizar el carrito
+  };
+
+  // Incrementar la cantidad
   const incrementQuantity = () => {
-    const newQuantity = quantity! + 1;
-    if (isValidQuantity(product, newQuantity)) {
-      setQuantity(newQuantity);
-      setInputValue(newQuantity.toString());
-      onQuantityChange(newQuantity);
-    }
+    const newQuantity = calculateQuantity(quantity + 1);
+    setQuantity(newQuantity);
+    setInputValue(newQuantity.toString());
+    onQuantityChange(newQuantity);
   };
 
-  // Decrementamos la cantidad
+  // Decrementar la cantidad
   const decrementQuantity = () => {
-    const newQuantity = quantity! - 1;
-    if (newQuantity >= 0) {
-      setQuantity(newQuantity);
-      setInputValue(newQuantity.toString());
-      onQuantityChange(newQuantity);
-    }
+    const newQuantity = calculateQuantity(quantity - 1);
+    setQuantity(newQuantity);
+    setInputValue(newQuantity.toString());
+    onQuantityChange(newQuantity);
   };
+
+  // Actualizar el estado si la cantidad inicial cambia
+  useEffect(() => {
+    setQuantity(initialQuantity || 0);
+    setInputValue(initialQuantity?.toString() || "0");
+  }, [initialQuantity]);
 
   return {
     inputValue,
+    setInputValue,
     handleInputChange,
+    handleInputBlur,
     incrementQuantity,
     decrementQuantity,
   };
