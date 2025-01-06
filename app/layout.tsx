@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Rubik } from "next/font/google";
 import "./globals.css";
+import { CartProvider } from "./context/CartContext";
 
 const rubik = Rubik({ subsets: ["latin"] });
 
@@ -20,7 +21,7 @@ export default function RootLayout({
         className={`${rubik.className} antialiased`}
         style={{ overflowX: "hidden" }}
       >
-        {children}
+        <CartProvider>{children}</CartProvider>
       </body>
     </html>
   );

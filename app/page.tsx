@@ -1,12 +1,12 @@
 "use client";
 
 import Cart from "./components/Cart/Cart";
-import useCart from "./hooks/useCart";
 import products from "./data/productData";
 import Product from "./components/Product/Product";
+import { useCart } from "./hooks/useCart";
 
 export default function App() {
-  const { cart, handleAddToCart, handleRemoveFromCart } = useCart();
+  const { cart, addToCart, removeFromCart } = useCart();
 
   return (
     <main className="mx-auto lg:mx-32 xl:mx-60 px-4 py-8">
@@ -17,8 +17,8 @@ export default function App() {
             key={product.id}
             product={product}
             cartItems={cart.items}
-            onAddToCart={handleAddToCart}
-            onRemoveFromCart={handleRemoveFromCart}
+            onAddToCart={addToCart}
+            onRemoveFromCart={removeFromCart}
           />
         ))}
       </article>
