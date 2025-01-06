@@ -1,4 +1,4 @@
-import { Product as ProductType, CartItem } from "../../types";
+import { Product as ProductType } from "../../types";
 import useQuantity from "@/app/hooks/useQuantity";
 import ProductImage from "./ProductImage";
 import ProductDetails from "./ProductDetails";
@@ -8,24 +8,16 @@ import ProductCheckoutButton from "./ProductCheckoutButton";
 
 interface ProductProps {
   product: ProductType;
-  cartItems: CartItem[];
-  onAddToCart: (product: ProductType, quantity: number) => void;
-  onRemoveFromCart: (productId: number) => void;
 }
 
-const Product: React.FC<ProductProps> = ({
-  product,
-  cartItems,
-  onAddToCart,
-  onRemoveFromCart,
-}) => {
+const Product: React.FC<ProductProps> = ({ product }) => {
   const {
     quantity,
     handleAddToCart,
     handleRemoveFromCart,
     handleQuantityChange,
     cartItemQuantity,
-  } = useQuantity({ product, cartItems, onAddToCart, onRemoveFromCart });
+  } = useQuantity({ product });
 
   return (
     <div

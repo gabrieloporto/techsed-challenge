@@ -1,19 +1,15 @@
 import { useState } from "react";
 import { CartItem, Product } from "../types";
+import { useCart } from "./useCart";
 
 interface UseQuantityProps {
   product: Product;
-  cartItems: CartItem[];
-  onAddToCart: (product: Product, quantity: number) => void;
-  onRemoveFromCart: (productId: number) => void;
 }
 
-export default function useQuantity({
-  product,
-  cartItems,
-  onAddToCart,
-  onRemoveFromCart,
-}: UseQuantityProps) {
+export default function useQuantity({ product }: UseQuantityProps) {
+  const { cart, addToCart, removeFromCart } = useCart();
+  const cartItems = cart.items;
+
   // Incializa el estado de la cantidad del producto en 0
   const [quantity, setQuantity] = useState(0);
 
@@ -32,14 +28,14 @@ export default function useQuantity({
   // Maneja la acción de añadir al carrito
   const handleAddToCart = () => {
     if (quantity > 0) {
-      onAddToCart(product, quantity);
+      addToCart(product, quantity);
     }
   };
 
   // Maneja la acción de remover del carrito
   const handleRemoveFromCart = () => {
     if (cartItemQuantity > 0) {
-      onRemoveFromCart(product.id);
+      removeFromCart(product.id);
       setQuantity(0);
     }
   };
