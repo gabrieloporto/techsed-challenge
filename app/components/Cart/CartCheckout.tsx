@@ -1,7 +1,15 @@
+import { useCart } from "@/app/hooks/useCart";
+import { CartItem } from "@/app/types";
 import { formatPrice } from "@/app/utils/productUtils";
 import { useMemo } from "react";
 
-export default function CartCheckout({ total }: { total: number }) {
+export default function CartCheckout() {
+  const { cart } = useCart();
+  const items = cart.items;
+
+  const totalSum = (items: CartItem[]) =>
+    items.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
+  const total = useMemo(() => totalSum(items), [items]);
   const totalPrice = useMemo(() => formatPrice(total), [total]);
 
   return (

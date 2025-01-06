@@ -24,7 +24,7 @@ export default function App() {
       </article>
 
       <footer className="mt-8">
-        <Cart items={cart.items} />
+        <Cart />
       </footer>
     </main>
   );

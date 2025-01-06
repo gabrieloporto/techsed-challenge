@@ -1,17 +1,10 @@
-import { useMemo } from "react";
-import { CartItem } from "../../types";
 import CartList from "./CartList";
 import CartCheckout from "./CartCheckout";
+import { useCart } from "@/app/hooks/useCart";
 
-interface CartProps {
-  items: CartItem[];
-}
-
-const Cart: React.FC<CartProps> = ({ items }) => {
-  // Calcula el total de la compra
-  const totalSum = (items: CartItem[]) =>
-    items.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
-  const total = useMemo(() => totalSum(items), [items]);
+const Cart = () => {
+  const { cart } = useCart();
+  const items = cart.items;
 
   return (
     <section className="border border-gray-300 p-4 rounded-lg shadow-md">
@@ -23,7 +16,7 @@ const Cart: React.FC<CartProps> = ({ items }) => {
           {items.map((item) => (
             <CartList item={item} key={item.product.id} />
           ))}
-          <CartCheckout total={total} />
+          <CartCheckout />
         </div>
       )}
     </section>
