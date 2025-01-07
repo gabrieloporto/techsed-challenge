@@ -13,29 +13,35 @@ export const CartContext = createContext<CartContextProps | undefined>(
   undefined
 );
 
-export const CartProvider: React.FC<{ children: ReactNode }> = ({
-  children,
-}) => {
-  const [cart, setCart] = useState<Cart>({
-    id: "1",
-    items: [],
-    createdAt: new Date(),
-  });
+export const CartProvider: React.FC<{
+  children: ReactNode;
+  initialCart?: Cart;
+}> = ({ children, initialCart }) => {
+  const [cart, setCart] = useState<Cart>(
+    initialCart || { id: "1", items: [], createdAt: new Date() }
+  );
 
   const addToCart = (product: Product, quantity: number) => {
     setCart((prevCart) => {
       const existingItemIndex = prevCart.items.findIndex(
         (item) => item.product.id === product.id
       );
+
+      const adjustedQuantity = Math.min(quantity, product.stock);
+
       if (existingItemIndex !== -1) {
         const updatedItems = [...prevCart.items];
         updatedItems[existingItemIndex] = {
           ...updatedItems[existingItemIndex],
-          quantity,
+          quantity: adjustedQuantity,
         };
         return { ...prevCart, items: updatedItems };
       }
-      return { ...prevCart, items: [...prevCart.items, { product, quantity }] };
+
+      return {
+        ...prevCart,
+        items: [...prevCart.items, { product, quantity: adjustedQuantity }],
+      };
     });
   };
 

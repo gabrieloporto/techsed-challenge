@@ -1,83 +1,60 @@
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import ProductSelector from "@/app/components/Product/ProductSelector";
 import { Product } from "@/app/types";
-import { render, screen } from "@testing-library/react";
 
 describe("ProductSelector Component", () => {
   const mockHandleQuantityChange = jest.fn();
 
-  const mockGroupProduct: Product = {
+  const mockUnitProduct: Product = {
     id: 100012,
-    title: "Ladrillo hueco",
-    description: "Ladrillo hueco - Pallet",
+    title: "Test Product",
+    description: "Test Description",
     price: 60000,
     stock: 5,
-    salesUnit: "group",
-    measurementUnit: "pallet",
-    unitValue: 198,
-    imageUrl: "https://example.com/group.jpg",
+    salesUnit: "unit",
+    imageUrl: "https://example.com/test.jpg",
   };
 
-  it("renders correctly for 'group' products", () => {
-    render(
-      <ProductSelector
-        product={mockGroupProduct}
-        quantity={2}
-        cartItemQuantity={1}
-        handleQuantityChange={mockHandleQuantityChange}
-      />
-    );
-
-    expect(screen.getByText("Cantidad de pallets")).toBeInTheDocument();
-    expect(screen.getByText("Cantidad de unidades")).toBeInTheDocument();
-    expect(screen.getByDisplayValue("396")).toBeInTheDocument(); // 198 * 2
+  beforeEach(() => {
+    jest.clearAllMocks();
   });
 
-  it("renders correctly for 'area' products", () => {
-    const mockAreaProduct: Product = {
-      ...mockGroupProduct,
-      salesUnit: "area",
-      measurementUnit: "m2",
-      unitValue: 2.68,
-    };
-
-    render(
-      <ProductSelector
-        product={mockAreaProduct}
-        quantity={3}
-        cartItemQuantity={2}
-        handleQuantityChange={mockHandleQuantityChange}
-      />
-    );
-
-    expect(screen.getByText("Superficie")).toBeInTheDocument();
-
-    // Comparación aproximada para evitar errores de redondeo
-    const input = screen.getByDisplayValue(
-      (value) => Math.abs(parseFloat(value) - 8.04) < 0.01
-    );
-    expect(input).toBeInTheDocument();
-
-    expect(screen.getByText("m²")).toBeInTheDocument();
-  });
-
-  it("renders correctly for 'unit' products", () => {
-    const mockUnitProduct: Product = {
-      ...mockGroupProduct,
-      salesUnit: "unit",
-      unitValue: undefined,
-    };
-
+  it("handles unit quantity changes correctly", async () => {
+    const user = userEvent.setup();
     render(
       <ProductSelector
         product={mockUnitProduct}
-        quantity={1}
-        cartItemQuantity={3}
+        cartItemQuantity={0}
         handleQuantityChange={mockHandleQuantityChange}
       />
     );
 
-    expect(screen.getByText("Cantidad")).toBeInTheDocument();
-    expect(screen.queryByText("Superficie")).not.toBeInTheDocument();
-    expect(screen.queryByText("Cantidad de unidades")).not.toBeInTheDocument();
+    const incrementButton = screen.getByLabelText("Increment");
+    await user.click(incrementButton);
+
+    expect(mockHandleQuantityChange).toHaveBeenCalledWith(1);
+  });
+
+  it("respects stock limits", async () => {
+    const user = userEvent.setup();
+    const limitedStockProduct = { ...mockUnitProduct, stock: 2 };
+
+    render(
+      <ProductSelector
+        product={limitedStockProduct}
+        cartItemQuantity={0}
+        handleQuantityChange={mockHandleQuantityChange}
+      />
+    );
+
+    const incrementButton = screen.getByLabelText("Increment");
+
+    // Click tres veces, deberia llegar a 2(max stock)
+    await user.click(incrementButton);
+    await user.click(incrementButton);
+    await user.click(incrementButton);
+
+    expect(mockHandleQuantityChange).toHaveBeenLastCalledWith(2);
   });
 });

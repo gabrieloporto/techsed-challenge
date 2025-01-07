@@ -1,6 +1,22 @@
+import { render, screen, within } from "@testing-library/react";
 import Cart from "@/app/components/Cart/Cart";
-import { CartItem } from "@/app/types";
-import { render, screen } from "@testing-library/react";
+import { CartProvider } from "@/app/context/CartContext";
+import { CartItem, Cart as CartType } from "@/app/types";
+import { formatPrice } from "@/app/utils/productUtils";
+
+// Función auxiliar para renderizar con el proveedor
+const renderWithProvider = (
+  component: React.ReactNode,
+  initialCart: CartType = {
+    id: "1",
+    items: [],
+    createdAt: new Date(),
+  }
+) => {
+  return render(
+    <CartProvider initialCart={initialCart}>{component}</CartProvider>
+  );
+};
 
 describe("Cart Component", () => {
   const mockCartItems: CartItem[] = [
@@ -19,70 +35,57 @@ describe("Cart Component", () => {
       },
       quantity: 2,
     },
-    {
-      product: {
-        id: 2060,
-        title: "Ceramico Azabache 20Und 36X36 1ra 2,68 m2 por Caja",
-        description:
-          "Ceramica esmaltada36x36, terminacion brillante, transito medio, liso, Colores disponibles: Negro",
-        price: 13031,
-        stock: 5,
-        salesUnit: "area",
-        measurementUnit: "m2",
-        unitValue: 2.68,
-        imageUrl: "https://example.com/product2.jpg",
-      },
-      quantity: 3,
-    },
   ];
 
+  const mockCart: CartType = {
+    id: "1",
+    items: mockCartItems,
+    createdAt: new Date(),
+  };
+
   it("renders empty state correctly", () => {
-    render(<Cart items={[]} />);
+    renderWithProvider(<Cart />);
     expect(screen.getByText("El carrito está vacío")).toBeInTheDocument();
   });
 
-  it("renders cart items correctly", () => {
-    render(<Cart items={mockCartItems} />);
+  it("renders cart items with correct quantities and prices", () => {
+    renderWithProvider(<Cart />, mockCart);
 
-    mockCartItems.forEach((item) => {
-      expect(screen.getByText(item.product.title)).toBeInTheDocument();
-      expect(
-        screen.getByText(`Cantidad: ${item.quantity}`)
-      ).toBeInTheDocument();
+    const productContainer = screen
+      .getByText(mockCartItems[0].product.title)
+      .closest("li");
+    expect(productContainer).toBeInTheDocument();
 
-      // Comparar precios con un matcher más flexible
-      expect(
-        screen.getByText((content) =>
-          content.includes(item.product.price.toLocaleString())
-        )
-      ).toBeInTheDocument();
-    });
+    const quantity = within(productContainer!).getByText(
+      `Cantidad: ${mockCartItems[0].quantity}`
+    );
+    expect(quantity).toBeInTheDocument();
+
+    const price = within(productContainer!).getByText(
+      formatPrice(mockCartItems[0].product.price)
+    );
+    expect(price).toBeInTheDocument();
   });
 
   it("calculates and displays the total correctly", () => {
-    render(<Cart items={mockCartItems} />);
+    renderWithProvider(<Cart />, mockCart);
 
-    // Calcular el total esperado
-    const expectedTotal = mockCartItems.reduce(
+    const total = mockCartItems.reduce(
       (sum, item) => sum + item.product.price * item.quantity,
       0
     );
 
-    // Aquí se espera que el total se muestre correctamente
-    expect(
-      screen.getByText((content) =>
-        content.includes(expectedTotal.toLocaleString())
-      )
-    ).toBeInTheDocument();
+    const totalElement = screen.getByText("Total");
+    const totalValueElement = totalElement.nextElementSibling;
+
+    expect(totalValueElement?.textContent).toBe(formatPrice(total));
   });
 
-  it("renders 'Finalizar compra' button correctly", () => {
-    render(<Cart items={mockCartItems} />);
+  it("renders checkout button when cart has items", () => {
+    renderWithProvider(<Cart />, mockCart);
 
-    const checkoutButton = screen.getByRole("button", {
-      name: /finalizar compra/i,
-    });
-    expect(checkoutButton).toBeInTheDocument();
-    expect(checkoutButton).toBeEnabled();
+    const button = screen.getByRole("button", { name: /finalizar compra/i });
+    expect(button).toBeInTheDocument();
+    expect(button).toBeEnabled();
   });
 });

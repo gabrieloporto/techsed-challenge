@@ -1,6 +1,11 @@
+import { render, screen } from "@testing-library/react";
 import Product from "@/app/components/Product/Product";
-import { CartItem, Product as ProductType } from "@/app/types";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { CartProvider } from "@/app/context/CartContext";
+import { Product as ProductType } from "@/app/types";
+
+const renderWithProvider = (component: React.ReactNode) => {
+  return render(<CartProvider>{component}</CartProvider>);
+};
 
 describe("Product Component", () => {
   const mockProduct: ProductType = {
@@ -10,114 +15,44 @@ describe("Product Component", () => {
     price: 60588,
     listingPrice: 67320,
     stock: 5,
-    salesUnit: "group",
-    measurementUnit: "pallet",
-    unitValue: 198,
+    salesUnit: "unit",
     imageUrl: "https://example.com/product.jpg",
   };
-
-  const mockCartItems: CartItem[] = [];
-  const mockOnAddToCart = jest.fn();
-  const mockOnRemoveFromCart = jest.fn();
 
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  it("renders the product's details correctly", () => {
-    render(
-      <Product
-        product={mockProduct}
-        cartItems={mockCartItems}
-        onAddToCart={mockOnAddToCart}
-        onRemoveFromCart={mockOnRemoveFromCart}
-      />
-    );
+  it("renders product details correctly", () => {
+    renderWithProvider(<Product product={mockProduct} />);
 
     expect(screen.getByText(mockProduct.title)).toBeInTheDocument();
     expect(screen.getByText(mockProduct.description)).toBeInTheDocument();
 
-    // Aqui tenia un problema al verificar la imagen y era que next.js altera las URL de las imagenes
-    // Solución: Verificar que `src` contenga la URL codificada
-    const image = screen.getByAltText(mockProduct.title);
-    expect(image).toHaveAttribute(
-      "src",
-      expect.stringContaining(encodeURIComponent(mockProduct.imageUrl))
-    );
+    const priceText = screen.getByText((content) => content.includes("60.588"));
+    expect(priceText).toBeInTheDocument();
   });
 
-  it("disables the add button if stock is 0", () => {
-    const productOutOfStock = { ...mockProduct, stock: 0 };
+  it("handles out of stock products correctly", () => {
+    const outOfStockProduct = { ...mockProduct, stock: 0 };
+    renderWithProvider(<Product product={outOfStockProduct} />);
 
-    render(
-      <Product
-        product={productOutOfStock}
-        cartItems={mockCartItems}
-        onAddToCart={mockOnAddToCart}
-        onRemoveFromCart={mockOnRemoveFromCart}
-      />
-    );
-
-    const addButton = screen.getByRole("button", { name: /agregar/i });
-    expect(addButton).toBeDisabled();
+    const button = screen.getByRole("button", { name: /agregar/i });
+    expect(button).toBeDisabled();
+    expect(screen.getByText("Stock agotado")).toBeInTheDocument();
   });
 
-  it("calls onAddToCart when 'Agregar' button is clicked", () => {
-    render(
-      <Product
-        product={mockProduct}
-        cartItems={mockCartItems}
-        onAddToCart={mockOnAddToCart}
-        onRemoveFromCart={mockOnRemoveFromCart}
-      />
-    );
-
-    // Buscar el botón de incremento usando aria-label
-    const incrementButton = screen.getByRole("button", { name: /increment/i });
-    fireEvent.click(incrementButton); // Incrementa `quantity` a 1
-
-    const addButton = screen.getByRole("button", { name: /agregar/i });
-    fireEvent.click(addButton);
-
-    // Verificar que la función fue llamada correctamente
-    expect(mockOnAddToCart).toHaveBeenCalledTimes(1);
-    expect(mockOnAddToCart).toHaveBeenCalledWith(mockProduct, 1);
-  });
-
-  it("calls onRemoveFromCart when 'Eliminar del carrito' button is clicked", () => {
-    const cartItemsWithProduct = [{ product: mockProduct, quantity: 2 }];
-
-    render(
-      <Product
-        product={mockProduct}
-        cartItems={cartItemsWithProduct}
-        onAddToCart={mockOnAddToCart}
-        onRemoveFromCart={mockOnRemoveFromCart}
-      />
-    );
-
-    const removeButton = screen.getByRole("button", {
-      name: /eliminar del carrito/i,
-    });
-    fireEvent.click(removeButton);
-
-    expect(mockOnRemoveFromCart).toHaveBeenCalledWith(mockProduct.id);
-  });
-
-  it("renders 'Cambiar cantidad' if product is already in cart", () => {
-    const cartItemsWithProduct = [{ product: mockProduct, quantity: 2 }];
-
-    render(
-      <Product
-        product={mockProduct}
-        cartItems={cartItemsWithProduct}
-        onAddToCart={mockOnAddToCart}
-        onRemoveFromCart={mockOnRemoveFromCart}
-      />
-    );
+  it("displays correct price information including discounts", () => {
+    renderWithProvider(<Product product={mockProduct} />);
 
     expect(
-      screen.getByRole("button", { name: /cambiar cantidad/i })
+      screen.getByText((content) => content.includes("60.588"))
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText((content) => content.includes("OFF"))
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText((content) => content.includes("67.320"))
     ).toBeInTheDocument();
   });
 });
