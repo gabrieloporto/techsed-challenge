@@ -7,7 +7,9 @@ interface UseQuantityProps {
 }
 
 export default function useQuantity({ product }: UseQuantityProps) {
+  // Obtiene el carrito y las funciones para añadir y remover productos
   const { cart, addToCart, removeFromCart } = useCart();
+  // Obtiene los productos del carrito
   const cartItems = cart.items;
 
   // Incializa el estado de la cantidad del producto en 0

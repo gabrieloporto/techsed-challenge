@@ -9,7 +9,9 @@ interface UseCartProps {
 }
 
 export const useCart = (): UseCartProps => {
+  // Implementación de useCart
   const context = useContext(CartContext);
+  // Si no se encuentra el contexto, lanzar un error
   if (!context)
     throw new Error("useCart debe usarse dentro de un CartProvider");
   return context;

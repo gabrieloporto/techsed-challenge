@@ -17,11 +17,14 @@ export const CartProvider: React.FC<{
   children: ReactNode;
   initialCart?: Cart;
 }> = ({ children, initialCart }) => {
+  // Estado del carrito
   const [cart, setCart] = useState<Cart>(
     initialCart || { id: "1", items: [], createdAt: new Date() }
   );
 
+  // Añade un producto al carrito
   const addToCart = (product: Product, quantity: number) => {
+    // Si el producto ya está en el carrito, actualiza la cantidad
     setCart((prevCart) => {
       const existingItemIndex = prevCart.items.findIndex(
         (item) => item.product.id === product.id
@@ -45,7 +48,9 @@ export const CartProvider: React.FC<{
     });
   };
 
+  // Elimina un producto del carrito
   const removeFromCart = (productId: number) => {
+    // Filtra los items que no sean el producto a eliminar
     setCart((prevCart) => ({
       ...prevCart,
       items: prevCart.items.filter((item) => item.product.id !== productId),

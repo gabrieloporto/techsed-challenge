@@ -12,13 +12,17 @@ export default function useGroupSelector({
   initialQuantity = 0,
   onQuantityChange,
 }: UseGroupSelectorProps) {
+  // Cantidad de unidades
   const [units, setUnits] = useState<number | string>(
     initialQuantity * product.unitValue!
   );
+  // Cantidad de pallets
   const [pallets, setPallets] = useState<number | string>(initialQuantity);
 
+  // Cantidad máxima de unidades
   const maxUnits = product.stock * product.unitValue!;
 
+  // Actualizar unidades y pallets al cambiar la cantidad inicial
   useEffect(() => {
     setUnits(initialQuantity * product.unitValue!);
     setPallets(initialQuantity);
