@@ -10,7 +10,6 @@ const mockProduct: Product = {
   imageUrl: "https://example.com/test.jpg",
   salesUnit: "unit",
   unitValue: 1,
-  measurementUnit: "m2",
   stock: 100,
 };
 
