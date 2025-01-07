@@ -13,7 +13,8 @@ export const formatPrice = (price: number): string => {
   return new Intl.NumberFormat("es-AR", {
     style: "currency",
     currency: "ARS",
+    maximumFractionDigits: 0, // Elimina los decimales
   })
     .format(price)
-    .replace(",00", ""); // Elimina los decimales si son 00
+    .replace(/\s/g, ""); // Elimina cualquier espacio en blanco
 };
