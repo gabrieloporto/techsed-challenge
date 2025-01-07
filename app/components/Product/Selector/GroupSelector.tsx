@@ -56,6 +56,7 @@ const GroupSelector: React.FC<GroupSelectorProps> = ({
             className="rounded border p-1 hover:bg-gray-100"
             onClick={decrementPallets}
             disabled={Number(pallets) <= 1}
+            aria-label="Decrement"
           >
             <MinusIcon />
           </button>
@@ -71,6 +72,7 @@ const GroupSelector: React.FC<GroupSelectorProps> = ({
             className="rounded border p-1 hover:bg-gray-100"
             onClick={incrementPallets}
             disabled={Number(pallets) >= product.stock}
+            aria-label="Increment"
           >
             <PlusIcon />
           </button>
