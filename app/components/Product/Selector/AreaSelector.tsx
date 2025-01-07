@@ -26,7 +26,6 @@ const AreaSelector: React.FC<AreaSelectorProps> = ({
 
   return (
     <div className="flex space-x-7">
-      {/* Input para la superficie */}
       <div>
         <span className="text-sm font-medium">Superficie</span>
         <div className="mt-1">
@@ -42,7 +41,6 @@ const AreaSelector: React.FC<AreaSelectorProps> = ({
         </div>
       </div>
 
-      {/* Input para la cantidad de cajas */}
       <div>
         <span className="text-sm font-medium">Cantidad de cajas</span>
         <div className="mt-1 flex items-center space-x-2">
@@ -58,9 +56,9 @@ const AreaSelector: React.FC<AreaSelectorProps> = ({
             className="w-16 rounded border p-1 text-center border-gray-100"
             type="text"
             value={boxes}
-            onChange={(e) => setBoxes(e.target.value)} // Permitir edición temporal
-            onFocus={() => boxes === 0 && setBoxes("")} // Vaciar el campo al enfocar
-            onBlur={handleBoxesBlur} // Validar y ajustar al salir del input
+            onChange={(e) => setBoxes(e.target.value)}
+            onFocus={() => boxes === 0 && setBoxes("")}
+            onBlur={handleBoxesBlur}
           />
           <button
             className="rounded border p-1 hover:bg-gray-100"
