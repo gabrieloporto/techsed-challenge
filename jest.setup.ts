@@ -1,19 +1,18 @@
 import "@testing-library/jest-dom";
 
 // Establece la configuración regional a "es-AR" para todos los tests
-const mockNumberFormat = jest.fn().mockImplementation(() => {
-  return {
-    format: (value: number) =>
-      new Intl.NumberFormat("es-AR", {
-        style: "currency",
-        currency: "ARS",
-        maximumFractionDigits: 0,
-      })
-        .format(value)
-        .replace(/\s/g, ""),
-  };
-}) as unknown as typeof Intl.NumberFormat;
+const originalNumberFormat = Intl.NumberFormat;
 
-mockNumberFormat.supportedLocalesOf = jest.fn().mockReturnValue(["es-AR"]);
+const mockNumberFormat = jest.fn().mockImplementation((locales, options) => {
+  if (
+    locales === "es-AR" &&
+    options?.style === "currency" &&
+    options?.currency === "ARS"
+  ) {
+    return new originalNumberFormat(locales, options);
+  }
+  return new originalNumberFormat(locales, options);
+});
 
-global.Intl.NumberFormat = mockNumberFormat;
+global.Intl.NumberFormat =
+  mockNumberFormat as unknown as typeof Intl.NumberFormat;
